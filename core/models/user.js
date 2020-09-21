@@ -17,9 +17,13 @@ const UserSchema = Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      required: true,
+    },
     token: {
       type: String,
-      default: null,
+      required: true,
     },
   },
   { timestamps: true }
