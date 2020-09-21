@@ -1,5 +1,5 @@
 /**
- * Declarar librerías node
+ * Definición de librerías node
  */
 const createError = require("http-errors");
 const express = require("express");
@@ -10,25 +10,26 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 
+/**
+ * Inicializar dotenv para utilizar las variables de entorno
+ */
 dotenv.config();
 
 /**
- * Inicializar aplicación express
+ * Definición de la app express
  */
 const app = express();
 
 /**
  * Inicialiar Mongoose
  */
-const { DATABASE_URL, PATH_LOGIN } = process.env;
+const { DATABASE_URL } = process.env;
 mongoose
-  .connect(`${DATABASE_URL}/${PATH_LOGIN}`, {
+  .connect(DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then((db) =>
-    console.log(`MongoDB Connected - ${DATABASE_URL}/${PATH_LOGIN}`)
-  )
+  .then((db) => console.log(`MongoDB Connected - ${DATABASE_URL}`))
   .catch((err) => console.log(err));
 
 app.use(logger("dev"));
@@ -38,7 +39,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
-app.use("/users", require("./routes/users"));
+/**
+ * Definición de rutas de autenticación
+ */
+app.use("/authentication", require("./routes/authentication"));
 
 /**
  * Captar error 404 y reenviar al manejador de errores
