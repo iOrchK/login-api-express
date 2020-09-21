@@ -1,15 +1,15 @@
 var express = require("express");
 var router = express.Router();
-var UserController = require("../controllers/users");
-var md_auth = require("../middlewares/authenticated");
-
-// Login
-router.post("/login", UserController.logIn);
+var UserController = require("../controllers/authentication");
+// var md_auth = require("../middlewares/authenticated");
 
 // Register
 router.post("/register", UserController.register);
 
-// Register
+// Login
+router.post("/login", UserController.logIn);
+
+// Logout
 router.post("/logout", UserController.logOut);
 
 module.exports = router;
