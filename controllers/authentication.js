@@ -3,9 +3,12 @@ const jwt = require("jwt-simple");
 const moment = require("moment");
 const Security = require("../core/services/security");
 
-module.exports.register = (req, res) => {
-  const user = new User(req.body);
-  user
+module.exports.register = async (req, res) => {
+  const userExist = await User.findOne({ email: req.body.email });
+  if (userExist)
+    return res.status(400).json({ message: "Este correo ya está registrado" });
+  const newUser = new User(req.body);
+  newUser
     .save()
     .then((result) => {
       return res.status(201).json(result);
@@ -46,7 +49,7 @@ module.exports.logIn = async (req, res) => {
 
 module.exports.logOut = async (req, res) => {
   const result = await User.findOne({ _id: req.body.user._id });
-  if (!result) return res.status(400).json({ message: "Usuario no válido" });
+  if (!result) return res.status(400).json({ message: "Usuario inválido" });
   result.token = null;
   result
     .save()
